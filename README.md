@@ -24,7 +24,7 @@ The "Retract" default macro requires adjustments after this, as it doesn't fully
 
 ### Hardware assembly
 
-I followed the guide from their [Annex-Engineering](https://github.com/Annex-Engineering/TradRack/blob/main/docs/build_instructions/TradRack_Build_Instructions_Beta_A0.1.pdf), with only 3 pain points:
+I followed the guide from their [Annex-Engineering](https://github.com/Annex-Engineering/TradRack/blob/main/docs/build_instructions/TradRack_Build_Instructions_Beta_A0.1.pdf). It's a C-type cart. Three notes:
 
 1. Mind the side of the nuts, otherwise the next steps might not fit:
 <img width="753" height="540" alt="image" src="https://github.com/user-attachments/assets/b3d44012-182f-45f7-bb3f-2557530b4df7" />
@@ -65,4 +65,5 @@ One relevant bit I learned after finishing building: **do not put the servo moto
 # References:
 
 * https://www.instructables.com/ERCF-V2-for-Creality-K1K1MaxK1C/
-* 
+* https://sakitume.github.io/Custom-ERCF-Build-Sakitume-Edition/sidebar/happy-hare.html
+* https://www.teamfdm.com/forums/topic/2307-tradrack-another-mmu/
