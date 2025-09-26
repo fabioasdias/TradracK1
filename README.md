@@ -57,7 +57,7 @@ One relevant bit I learned after finishing building: **do not put the servo moto
 
 ### ERCF Easy BRD flashing
 
-**DO NOT USE THE LATEST VERSION OF KLIPPER**. It will fail the communication. For my vanilla K1, it was version [0.12.0 from 2023](https://github.com/Klipper3d/klipper/releases/tag/v0.12.0). Just the vanilla guide. The triangle labs kit came with a Seeed Studio XIAO SAMD21, so pick that one. No other custom configuration required, no bound rate tweak or anything, just `make menuconfig` and flash it. [See this on how to enter the bootloader].(https://wiki.seeedstudio.com/Seeeduino-XIAO/#enter-bootloader-mode).
+**DO NOT USE THE LATEST VERSION OF KLIPPER**. It will fail the communication. For my vanilla K1, it was version [0.12.0 from 2023](https://github.com/Klipper3d/klipper/releases/tag/v0.12.0). Just the vanilla guide. The triangle labs kit came with a Seeed Studio XIAO SAMD21, so pick that one. No other custom configuration required, no bound rate tweak or anything, just `make menuconfig` and flash it. [See this on how to enter the bootloader](https://wiki.seeedstudio.com/Seeeduino-XIAO/#enter-bootloader-mode).
 
 ### Happy Hare
 
