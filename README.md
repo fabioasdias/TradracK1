@@ -76,7 +76,7 @@ Answer the questions and it should be _mostly_ fine. Two little caveats caused b
     if tq is not None and tq != ffi_main.NULL:
         self.trapq_finalize_moves(tq, t) #, t - MOVE_HISTORY_EXPIRE)
    ```
-3. Do not ask me why, but I needed to have a symbolic link to "print_data" in my home folder to make it work. So `cd ~ ; ln -s /usr/data/printer_data`.
+3. Happy hare code assumes klipper is installed in `~`, so unless you want to chase every `~/printer_data`,  have a symbolic link to "print_data" in the home folder. So `cd ~ ; ln -s /usr/data/printer_data`.
 
    
 ### Servo calibration
