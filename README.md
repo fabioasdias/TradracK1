@@ -93,7 +93,10 @@ maximum_pulse_width: 0.0025
 
 ### Carry on with calibration
 
-Those were all the little caveats I found. Otherwise, just follow the guides: https://github.com/moggieuk/Happy-Hare/wiki/Hardware-Configuration
+Those were all the little caveats I found. Otherwise, just follow the guides: 
+
+https://github.com/moggieuk/Happy-Hare/wiki/Hardware-Configuration
+
 I also put my config files in this git for reference. I still have some calibration and kinks to work out (it's doing filament change without parking the head, and it's trying to home the Z axis on MMU_END), but the basic tool change during print is working.
 
 # References:
