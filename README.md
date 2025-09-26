@@ -63,7 +63,7 @@ One relevant bit I learned after finishing building: **do not put the servo moto
 
 The installer needs bash, and even then, it doesn't really work in the K1. Clone the Happy Hare repo, but replace the installer with [this file](https://github.com/k1-801/Happy-Hare/blob/k1/install.sh). Adjust the version to match whatever happy hare you have and run. It will require all the parameters, like this:
 
-```shell
+``` shell
 bash ./install.sh -k /usr/share/klipper -c /usr/data/printer_data/config -m /usr/data/moonraker/moonraker -i
 ```
 
@@ -77,12 +77,24 @@ Answer the questions and it should be _mostly_ fine. Two little caveats caused b
         self.trapq_finalize_moves(tq, t) #, t - MOVE_HISTORY_EXPIRE)
    ```
 
-### Stepper calibration
+### Servo calibration
 
-Follow the [servo calibration guide](https://github.com/Annex-Engineering/TradRack/blob/main/docs/Quick_Start.md#servo-calibration). However, before you start, set the position to 0 and then to the max it goes, usually < 180 (if you put 10000, it will go to max) and see how much it actually turns. From "factory" mine was doing only 90 degrees, and that's not nearly enough to fully lift the assembly.
+Follow the [servo calibration guide](https://github.com/Annex-Engineering/TradRack/blob/main/docs/Quick_Start.md#servo-calibration). However, before you start, set the position to 0 and then to the max it goes, usually < 180 (if you put 10000, it will go to max), and see how much it actually turns. From "factory" mine was doing only 90 degrees, and that's not nearly enough to fully lift the assembly.
 
-That's because the 1171MG angle is controlled by pwm, the "center" is represented as 1500ms, do a pulse with a lower ms and it goes to one way, higher goes the other. The limits on the configuration are enforcing those 90 degrees. 
+That's because the 1171MG angle is controlled by pwm, the "center" is represented as 1500ms, do a pulse with a lower ms and it goes to one way, higher goes the other. The limits on the configuration are causing those 90 degrees. Change the min and the max pulse widths to these values and then continue the same guide.
 
+``` cfg
+[mmu_servo selector_servo]
+pin: mmu:MMU_SEL_SERVO
+maximum_servo_angle: 180
+minimum_pulse_width: 0.0005 
+maximum_pulse_width: 0.0025
+```
+
+### Carry on with calibration
+
+Those were all the little caveats I found. Otherwise, just follow the guides: https://github.com/moggieuk/Happy-Hare/wiki/Hardware-Configuration
+I also put my config files in this git for reference. I still have some calibration and kinks to work out (it's doing filament change without parking the head, and it's trying to home the Z axis on MMU_END), but the basic tool change during print is working.
 
 # References:
 
