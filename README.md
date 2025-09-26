@@ -69,14 +69,16 @@ bash ./install.sh -k /usr/share/klipper -c /usr/data/printer_data/config -m /usr
 
 Answer the questions and it should be _mostly_ fine. Two little caveats caused by Happy Hare assuming a newer version of Klipper:
 
-1. It relies on a 'led.py` file that doesn't exist, so it will fail with a "cannot import led from extras".  Solution? Copy [the led file from the git](https://github.com/Klipper3d/klipper/blob/master/klippy/extras/led.py) into the /usr/share/klipper/klippy/extras folder.
+1. It relies on a `led.py` file that doesn't exist, so it will fail with a "cannot import led from extras".  Solution? Copy [the led file from the git](https://github.com/Klipper3d/klipper/blob/master/klippy/extras/led.py) into the /usr/share/klipper/klippy/extras folder.
 2. If you get a cryptic error "'void(*)(struct trapq *, double)' expects 2 arguments, got 3", it's because this [commit here](https://github.com/Klipper3d/klipper/commit/d7f6348ae6e45e4b566d10974b10ab4bb111222b#diff-23b1c216e99900b3decb4e0f61af0c7c7f36a70603ff34177ab0fe069f29f492) changed the signature of `trapq_finalize_moves` from requiring 2 parameters to requiring 3. So Happy Hare passes 3, but the compiled code of Klipper only accepts two. To solve it, edit the file `/usr/share/klipper/klippy/extras/mmu_machine.py` ([Here's the exact line on git](https://github.com/moggieuk/Happy-Hare/blob/ef044c4b094151c69a86cce0c338bac4fdf177e9/extras/mmu_machine.py#L692)) to:
    ```python
    def _finalize_if_valid(tq, t):
     if tq is not None and tq != ffi_main.NULL:
         self.trapq_finalize_moves(tq, t) #, t - MOVE_HISTORY_EXPIRE)
    ```
+3. Do not ask me why, but I needed to have a symbolic link to "print_data" in my home folder to make it work. So `cd ~ ; ln -s /usr/data/printer_data`.
 
+   
 ### Servo calibration
 
 Follow the [servo calibration guide](https://github.com/Annex-Engineering/TradRack/blob/main/docs/Quick_Start.md#servo-calibration). However, before you start, set the position to 0 and then to the max it goes, usually < 180 (if you put 10000, it will go to max), and see how much it actually turns. From "factory" mine was doing only 90 degrees, and that's not nearly enough to fully lift the assembly.
