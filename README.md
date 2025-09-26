@@ -55,11 +55,33 @@ One relevant bit I learned after finishing building: **do not put the servo moto
 1. I made a support that lets you hook the [tradrack in the printer](https://www.printables.com/model/1424644-tradrack-mount-for-creality-k1).
 2. For the circuit board, I printed [a support in PLA](https://www.printables.com/model/481199-ercf-easybrdcan-brd-mount-for-tr).
 
-## Software
-
 ### ERCF Easy BRD flashing
 
-**DO NOT USE THE LATEST VERSION OF KLIPPER**. It will fail the communication. For my vanilla K1, it was version [0.12.0 from 2023](https://github.com/Klipper3d/klipper/releases/tag/v0.12.0). Just the vanilla guide 
+**DO NOT USE THE LATEST VERSION OF KLIPPER**. It will fail the communication. For my vanilla K1, it was version [0.12.0 from 2023](https://github.com/Klipper3d/klipper/releases/tag/v0.12.0). Just the vanilla guide. The triangle labs kit came with a Seeed Studio XIAO SAMD21, so pick that one. No other custom configuration required, no bound rate tweak or anything, just `make menuconfig` and flash it. [See this on how to enter the bootloader].(https://wiki.seeedstudio.com/Seeeduino-XIAO/#enter-bootloader-mode).
+
+### Happy Hare
+
+The installer needs bash, and even then, it doesn't really work in the K1. Clone the Happy Hare repo, but replace the installer with [this file](https://github.com/k1-801/Happy-Hare/blob/k1/install.sh). Adjust the version to match whatever happy hare you have and run. It will require all the parameters, like this:
+
+```shell
+bash ./install.sh -k /usr/share/klipper -c /usr/data/printer_data/config -m /usr/data/moonraker/moonraker -i
+```
+
+Answer the questions and it should be _mostly_ fine. Two little caveats caused by Happy Hare assuming a newer version of Klipper:
+
+1. It relies on a 'led.py` file that doesn't exist, so it will fail with a "cannot import led from extras".  Solution? Copy [the led file from the git](https://github.com/Klipper3d/klipper/blob/master/klippy/extras/led.py) into the /usr/share/klipper/klippy/extras folder.
+2. If you get a cryptic error "'void(*)(struct trapq *, double)' expects 2 arguments, got 3", it's because this [commit here](https://github.com/Klipper3d/klipper/commit/d7f6348ae6e45e4b566d10974b10ab4bb111222b#diff-23b1c216e99900b3decb4e0f61af0c7c7f36a70603ff34177ab0fe069f29f492) changed the signature of `trapq_finalize_moves` from requiring 2 parameters to requiring 3. So Happy Hare passes 3, but the compiled code of Klipper only accepts two. To solve it, edit the file `/usr/share/klipper/klippy/extras/mmu_machine.py` ([Here's the exact line on git](https://github.com/moggieuk/Happy-Hare/blob/ef044c4b094151c69a86cce0c338bac4fdf177e9/extras/mmu_machine.py#L692)) to:
+   ```python
+   def _finalize_if_valid(tq, t):
+    if tq is not None and tq != ffi_main.NULL:
+        self.trapq_finalize_moves(tq, t) #, t - MOVE_HISTORY_EXPIRE)
+   ```
+
+### Stepper calibration
+
+Follow the [servo calibration guide](https://github.com/Annex-Engineering/TradRack/blob/main/docs/Quick_Start.md#servo-calibration). However, before you start, set the position to 0 and then to the max it goes, usually < 180 (if you put 10000, it will go to max) and see how much it actually turns. From "factory" mine was doing only 90 degrees, and that's not nearly enough to fully lift the assembly.
+
+That's because the 1171MG angle is controlled by pwm, the "center" is represented as 1500ms, do a pulse with a lower ms and it goes to one way, higher goes the other. The limits on the configuration are enforcing those 90 degrees. 
 
 
 # References:
@@ -67,3 +89,4 @@ One relevant bit I learned after finishing building: **do not put the servo moto
 * https://www.instructables.com/ERCF-V2-for-Creality-K1K1MaxK1C/
 * https://sakitume.github.io/Custom-ERCF-Build-Sakitume-Edition/sidebar/happy-hare.html
 * https://www.teamfdm.com/forums/topic/2307-tradrack-another-mmu/
+* https://wiki.seeedstudio.com/Seeeduino-XIAO/
